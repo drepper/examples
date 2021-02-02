@@ -48,19 +48,7 @@ EOF
 bc |
 while read a b c d; do
   if [ -z "$b" ]; then break; fi
-  idx=0
-  if [ $a -lt 256 ]; then
-    idx=$(($idx + 1))
-  fi
-  if [ $b -lt 256 ]; then
-    idx=$(($idx + 2))
-  fi
-  if [ $c -lt 256 ]; then
-    idx=$(($idx + 4))
-  fi
-  if [ $d -lt 256 ]; then
-    idx=$(($idx + 8))
-  fi
+  idx=$(($a / 256 + ($b / 256) * 2 + ($c / 256) * 4 + ($d / 256) * 8))
   printf '%s' "${blocks[$idx]}"
   n=$(($n + 1))
   if [ $n -eq $nx ]; then printf '\n'; n=0; fi
