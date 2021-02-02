@@ -8,9 +8,7 @@ nx=$(($(tput cols) - 1))
 ny=$(($(tput lines) - 1))
 
 blocks=(' ' '▘' '▝' '▀' '▖' '▌' '▞' '▛' '▗' '▚' '▐' '▜' '▄' '▙' '▟' '█')
-n=0
 
-clear
 bcprog="scale=10
 define f(cr,ci) {
   auto n,r,c,tmpr,tmpc;
@@ -42,14 +40,12 @@ define g(l,r,t,b,nx,ny,dx,dy) {
     ci += 2 * sy;
   }
 }
-g($l,$r,$t,$b,$nx,$ny,%s,%s)"
+g($l,$r,$t,$b,$nx,$ny,%s,%s)
+"
 
-prog1=$(printf "$bcprog" 0 0)
-prog2=$(printf "$bcprog" 1 0)
-prog3=$(printf "$bcprog" 0 1)
-prog4=$(printf "$bcprog" 1 1)
-
-paste <(echo "$prog1" | bc) <(echo "$prog2" | bc) <(echo "$prog3" | bc) <(echo "$prog4" | bc) |
+n=0
+clear
+paste <(printf "$bcprog" 0 0 | bc) <(printf "$bcprog" 1 0 | bc) <(printf "$bcprog" 0 1 | bc) <(printf "$bcprog" 1 1 | bc) |
 while read a b c d; do
   if [ -z "$b" ]; then break; fi
   idx=0
