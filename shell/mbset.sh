@@ -14,18 +14,14 @@ clear
 cat <<EOF |
 scale=10
 define f(cr,ci) {
-  auto n,r,c,tmpr,tmpc;
+  auto n,r,c,tmp;
   n=0;
   r=0.0;
   c=0.0;
-  while (r*r+c*c<30) {
-    tmpr=r*r-c*c+cr;
-    tmpc=2*r*c+ci;
-    r=tmpr;
-    c=tmpc;
-    n=n+1;
-    if (n>255)
-      return(256);
+  while (r*r+c*c<4 && ++n < 256) {
+    tmp=r*r-c*c+cr;
+    c=2*r*c+ci;
+    r=tmp;
   }
   return(n);
 }
@@ -38,9 +34,9 @@ define g(l,r,t,b,nx,ny) {
     cr = l;
     for (x = 0; x < nx; ++x) {
       print f(cr,ci), " ", f(cr+sx,ci), " ", f(cr,ci+sy), " ", f(cr+sx,ci+sy), "\n";
-      cr += 2 * sx;
+      cr += 2*sx;
     }
-    ci += 2 * sy;
+    ci += 2*sy;
   }
 }
 g($l,$r,$t,$b,$nx,$ny)

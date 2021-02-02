@@ -11,18 +11,14 @@ blocks=(' ' '▘' '▝' '▀' '▖' '▌' '▞' '▛' '▗' '▚' '▐' '▜' '�
 
 bcprog="scale=10
 define f(cr,ci) {
-  auto n,r,c,tmpr,tmpc;
+  auto n,r,c,tmp;
   n=0;
   r=0.0;
   c=0.0;
-  while (r*r+c*c<30) {
-    tmpr=r*r-c*c+cr;
-    tmpc=2*r*c+ci;
-    r=tmpr;
-    c=tmpc;
-    n=n+1;
-    if (n>255)
-      return(256);
+  while (r*r+c*c<4 && ++n < 256) {
+    tmp=r*r-c*c+cr;
+    c=2*r*c+ci;
+    r=tmp;
   }
   return(n);
 }
@@ -30,14 +26,14 @@ define g(l,r,t,b,nx,ny,dx,dy) {
   auto sx,sy,cr,ci,x,y;
   sx = (r - l) / (2 * nx);
   sy = (b - t) / (2 * ny);
-  ci = t;
+  ci = t+dy*sy;
   for (y = 0; y < ny; ++y) {
-    cr = l;
+    cr = l+dx*sx;
     for (x = 0; x < nx; ++x) {
-      print f(cr+dx*sx,ci+dy*sy), \"\\n\";
-      cr += 2 * sx;
+      print f(cr,ci), \"\\n\";
+      cr += 2*sx;
     }
-    ci += 2 * sy;
+    ci += 2*sy;
   }
 }
 g($l,$r,$t,$b,$nx,$ny,%s,%s)
